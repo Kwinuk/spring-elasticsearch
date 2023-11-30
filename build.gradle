@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+    // JSON
+    implementation 'org.json:json:20211205'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
