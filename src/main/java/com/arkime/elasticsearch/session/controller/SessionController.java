@@ -19,7 +19,17 @@ public class SessionController {
     @Description("arkime 세션 목록 검색")
     @PostMapping("/sessions")
     public ResponseEntity<SearchResult<SessionVO>> searchSessions(@RequestBody SearchRequest request) {
-        SearchResult<SessionVO> result = sessionService.searchSessions(request);
+
+        SearchResult<SessionVO> result = sessionService.searchSessions(
+                request.getExpression(),
+                request.getIncludeFields(),
+                request.getSortInfo(),
+                request.getStartTime(),
+                request.getStopTime(),
+                request.getBounding(),
+                request.getFrom(),
+                request.getSize()
+        );
 
         return ResponseEntity.ok(result);
     }

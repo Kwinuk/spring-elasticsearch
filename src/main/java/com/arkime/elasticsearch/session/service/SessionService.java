@@ -1,11 +1,14 @@
 package com.arkime.elasticsearch.session.service;
+
 import com.arkime.elasticsearch.session.model.SearchResult;
-import com.arkime.elasticsearch.common.SearchRequest;
 import com.arkime.elasticsearch.session.model.SessionVO;
 import com.arkime.elasticsearch.session.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -14,8 +17,12 @@ public class SessionService {
 
     private final SessionRepository sessionRepository;
 
-    public SearchResult<SessionVO> searchSessions(SearchRequest request) {
-        return sessionRepository.searchSessions(request);
+    public SearchResult<SessionVO> searchSessions(Map<String, Object> expression, String[] includeFields,
+                                                  List<Map<String, Object>> sortInfo, long startTime,
+                                                  long stopTime, String bounding, int from, int size) {
+
+        return sessionRepository.searchSessions(expression, includeFields, sortInfo, startTime, stopTime, bounding, from, size);
+
     }
 
 }

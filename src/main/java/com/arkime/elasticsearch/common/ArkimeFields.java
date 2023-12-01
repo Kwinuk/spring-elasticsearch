@@ -13,6 +13,7 @@ public class ArkimeFields {
 
     // 문서 ID
     public static final String FIELD_ID = "_id";
+    public static final String FIELD_DOC = "_doc";
 
     // 아이피
     public static final String FIELD_SRC_IP = "source.ip";
