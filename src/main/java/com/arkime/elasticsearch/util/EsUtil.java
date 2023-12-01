@@ -8,10 +8,12 @@ import org.apache.logging.log4j.Logger;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -66,7 +68,7 @@ public class EsUtil {
     }
 
     public static void setSortQuery(NativeSearchQueryBuilder searchQueryBuilder, List<Map<String, Object>> sortInfo) {
-        List<SortBuilder<?>> sorts = new ArrayList<>();
+//        List<SortBuilder<?>> sorts = new ArrayList<>();
 
         if (sortInfo != null && !sortInfo.isEmpty()) {
             for (Map<String, Object> sortField : sortInfo) {
@@ -74,15 +76,17 @@ public class EsUtil {
                 String order = (String) sortField.get(field);
 
                 if ("desc".equals(order)) {
-                    sorts.add(SortBuilders.fieldSort(field).order(SortOrder.DESC));
+                    searchQueryBuilder.withSorts(new FieldSortBuilder(SortBuilders.fieldSort(field).order(SortOrder.DESC)));
+//                    sorts.add(SortBuilders.fieldSort(field).order(SortOrder.DESC));
                 } else if ("asc".equals(order)) {
-                    sorts.add(SortBuilders.fieldSort(field).order(SortOrder.ASC));
+                    searchQueryBuilder.withSorts(new FieldSortBuilder(SortBuilders.fieldSort(field).order(SortOrder.ASC)));
+//                    sorts.add(SortBuilders.fieldSort(field).order(SortOrder.ASC));
                 }
             }
 
-            if (!sorts.isEmpty()) {
-                searchQueryBuilder.withSorts(sorts);
-            }
+//            if (!sorts.isEmpty()) {
+//                searchQueryBuilder.withSorts(new FieldSortBuilder(SortBuilders.fieldSort()));
+//            }
         }
     }
 
