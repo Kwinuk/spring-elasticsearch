@@ -18,10 +18,10 @@ public class SessionService {
     private final SessionRepository sessionRepository;
 
     public SearchResult<SessionVO> searchSessions(Map<String, Object> expression, String[] includeFields,
-                                                  List<Map<String, Object>> sortInfo, long startTime,
-                                                  long stopTime, String bounding, int from, int size) {
+                                                  String[] excludeFields, List<Map<String, Object>> sortInfo,
+                                                  long startTime, long stopTime, String bounding, int offset, int limit) {
 
-        return sessionRepository.searchSessions(expression, includeFields, sortInfo, startTime, stopTime, bounding, from, size);
+        return sessionRepository.searchSessions(expression, includeFields, excludeFields, sortInfo, startTime, stopTime, bounding, offset, limit);
 
     }
 

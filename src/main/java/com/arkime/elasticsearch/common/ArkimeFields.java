@@ -1,14 +1,13 @@
 package com.arkime.elasticsearch.common;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
 public class ArkimeFields {
 
     // 문서 ID
@@ -120,4 +119,19 @@ public class ArkimeFields {
         return allFieldsList.toArray(new String[0]);
     }
 
+    public static String[] getAllFields() {
+        return Arrays.stream(ArkimeFields.class.getDeclaredFields())
+                .filter(field -> java.lang.reflect.Modifier.isPublic(field.getModifiers())
+                        && java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && java.lang.reflect.Modifier.isFinal(field.getModifiers())
+                        && field.getType() == String.class)
+                .map(field -> {
+                    try {
+                        return (String) field.get(null);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .toArray(String[]::new);
+    }
 }

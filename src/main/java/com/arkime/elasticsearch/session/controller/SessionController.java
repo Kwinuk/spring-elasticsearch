@@ -1,6 +1,8 @@
 package com.arkime.elasticsearch.session.controller;
 
 import com.arkime.elasticsearch.common.SearchRequest;
+import com.arkime.elasticsearch.common.StatusCode;
+import com.arkime.elasticsearch.common.StatusResponse;
 import com.arkime.elasticsearch.session.model.SearchResult;
 import com.arkime.elasticsearch.session.service.SessionService;
 import com.arkime.elasticsearch.session.model.SessionVO;
@@ -18,18 +20,20 @@ public class SessionController {
 
     @Description("arkime 세션 목록 검색")
     @PostMapping("/sessions")
-    public ResponseEntity<SearchResult<SessionVO>> searchSessions(@RequestBody SearchRequest request) {
+    public ResponseEntity<StatusResponse> searchSessions(@RequestBody SearchRequest request) {
 
-        SearchResult<SessionVO> result = sessionService.searchSessions(
+        SearchResult<SessionVO> data = sessionService.searchSessions(
                 request.getExpression(),
                 request.getIncludeFields(),
+                request.getExcludeFields(),
                 request.getSortInfo(),
                 request.getStartTime(),
                 request.getStopTime(),
                 request.getBounding(),
-                request.getFrom(),
-                request.getSize()
+                request.getOffset(),
+                request.getLimit()
         );
+        StatusResponse result = new StatusResponse(StatusCode.OK, data.getData(), data.getRecordsTotal());
 
         return ResponseEntity.ok(result);
     }

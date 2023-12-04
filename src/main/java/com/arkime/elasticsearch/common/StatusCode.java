@@ -3,6 +3,7 @@ package com.arkime.elasticsearch.common;
 public enum StatusCode {
     OK("200"), //
     OK_CUSTOM("201"), //
+    BAD_REQUEST("400"),
     NOT_FOUND_PAGE("404"), //
     NETWORK_CONNECT_FAIL("599"), //
     SYSTEM_ERROR("500"), //
@@ -29,6 +30,7 @@ public enum StatusCode {
     public static String getMessage(final StatusCode code) {
         switch (code) {
             case OK:								return "";
+            case BAD_REQUEST:						return "Bad Request";
             case NOT_FOUND_PAGE:					return "Not found url";
             case NETWORK_CONNECT_FAIL: 				return "Network connection timeout error";
             case SYSTEM_ERROR: 						return "Internal server error";

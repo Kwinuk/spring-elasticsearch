@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class SearchRequest {
 
@@ -14,6 +13,8 @@ public class SearchRequest {
     private Map<String, Object> expression;
     // 조회 필드 목록
     private String[] includeFields;
+    // 조회 필드 목록
+    private String[] excludeFields;
     // 정렬 속성
     private List<Map<String, Object>> sortInfo;
     // 목록 조회 범위
@@ -21,7 +22,7 @@ public class SearchRequest {
     private long stopTime;
     private String bounding;  // 패킷 수집 지점
     // 페이징
-    private int from; // 페이지 번호
-    private int size;  // 목록 개수
+    private int offset; // 페이지 번호
+    private int limit;  // 목록 개수
 
 }
