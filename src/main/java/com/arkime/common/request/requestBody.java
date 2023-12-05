@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Data
 @AllArgsConstructor
-public class Request {
+public class requestBody {
 
     // 검색식 필드
     private Map<String, Object> expression;

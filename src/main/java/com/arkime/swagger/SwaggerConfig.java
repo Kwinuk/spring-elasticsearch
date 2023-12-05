@@ -1,8 +1,5 @@
 package com.arkime.swagger;
 
-import com.arkime.elasticsearch.sessions.controller.SessionController;
-import lombok.Value;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -35,7 +32,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Arkime API")
-                .description("Arkime API Docs")
+                .description("<h3>Arkime API 문서</h3><img src=\"https://raw.githubusercontent.com/arkime/arkime/main/assets/Arkime_Logo_FullGradientBlack@3x.png\" width=150 height=150 />")
                 .version("1.0")
                 .build();
     }
@@ -51,13 +48,8 @@ public class SwaggerConfig {
 
     List<SecurityReference> defaultAuth() {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = new AuthorizationScope("global", "accessEverything");;
+        authorizationScopes[0] = new AuthorizationScope("global", "accessEverything");
         return List.of(new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes));
     }
-
-//    private ApiKey securityScheme() {
-//        String targetHeader = "Authorization";
-//        return new ApiKey(AUTHORIZATION_HEADER, targetHeader, "header");
-//    }
 
 }

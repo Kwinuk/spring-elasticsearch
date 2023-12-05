@@ -105,7 +105,7 @@ public class EsUtil {
             offset = (offset == 0) ? 0 : (offset != -1) ? offset : 0;
             limit = (limit == 0) ? 50 : (limit != -1) ? Math.min(limit, 5000) : 50;
 
-            debugger.info("[PAGEABLE_SETTINGS] offset : {}, limit : {}",offset, limit, EsUtil.class);
+            debugger.info("[PAGEABLE_SETTINGS] offset : {}, limit : {}", offset, limit, EsUtil.class);
 
             searchQueryBuilder.withPageable(PageRequest.of(offset, limit));
         } catch (Exception e) {
@@ -154,6 +154,7 @@ public class EsUtil {
                         debugger.info("[SORT_SETTINGS] Field : {}, Order : {}", field, order, EsUtil.class);
                     } else {
                         debugger.error("Invalid Sort Field or Order Type", EsUtil.class);
+                        throw new IllegalArgumentException("Invalid Sort Field or Order Type");
                     }
                 }
             }
@@ -167,20 +168,28 @@ public class EsUtil {
             try {
                 return operations.search(query, voType);
             } catch (Exception e) {
-                retryCount++;
-                debugger.error("Error during Elasticsearch search operation (Retry " + retryCount + " of 5)", e, EsUtil.class);
-
-                if (retryCount <= 5) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
-                } else {
-                    debugger.warn("Maximum retry attempts reached", EsUtil.class);
-                    return null;
-                }
+                handleSearchException(e, retryCount);
             }
+        }
+    }
+
+    private static void handleSearchException(Exception e, int retryCount) {
+        retryCount++;
+        debugger.error("Error during search operation (Retry " + retryCount + " of 5)", e, EsUtil.class);
+
+        if (retryCount <= 5) {
+            sleep();
+        } else {
+            debugger.warn("Elasticsearch Maximum retry attempts reached", EsUtil.class);
+            throw new RuntimeException("Elasticsearch Maximum retry attempts reached", e);
+        }
+    }
+
+    private static void sleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -192,11 +201,9 @@ public class EsUtil {
                 try {
                     T result = hit != null ? hit.getContent() : null;
 
-                    if (result != null) {
-                        results.add(result);
-                    } else {
-                        debugger.warn("Null content in SearchHit", EsUtil.class);
-                    }
+                    if (result != null)  results.add(result);
+                    else debugger.warn("Null content in SearchHit", EsUtil.class);
+
                 } catch (Exception e) {
                     debugger.error("Error getting content from SearchHit", EsUtil.class);
                     throw new RuntimeException("Error getting content from SearchHit", e);
@@ -204,9 +211,8 @@ public class EsUtil {
             }
         } else {
             debugger.warn("Null SearchHits provided", EsUtil.class);
-            return results;
+            return null;
         }
-
         return results;
     }
 
@@ -221,14 +227,10 @@ public class EsUtil {
                 debugger.warn("Error during Elasticsearch count operation (Retry " + retryCount + " of " + 5 + ")", EsUtil.class);
 
                 if (retryCount <= 5) {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
+                    sleep();
                 } else {
                     debugger.error("Maximum retry attempts reached", EsUtil.class);
-                    throw new RuntimeException("Maximum retry attempts reached", e);
+                    throw new ElasticsearchException("Maximum retry attempts reached", e);
                 }
             }
         }
@@ -237,6 +239,7 @@ public class EsUtil {
     private static void validateFields(String[] fields) {
         if (fields == null || fields.length == 0) {
             debugger.warn("No field provided for validation.", EsUtil.class);
+            throw new IllegalArgumentException("Invalid Field");
         }
 
         Set<String> validFields = new HashSet<>(Arrays.asList(ArkimeFields.validateFields));
@@ -244,7 +247,7 @@ public class EsUtil {
         for (String field : Objects.requireNonNull(fields)) {
             if (!validFields.contains(field)) {
                 debugger.error("Invalid Field : {}", field, EsUtil.class);
-                throw new RuntimeException("Invalid Field");
+                throw new IllegalArgumentException("Invalid Field");
             }
         }
     }
@@ -252,13 +255,14 @@ public class EsUtil {
     private static void validateField(String field) {
         if (field == null) {
             debugger.warn("No field provided for validation.", EsUtil.class);
+            throw new IllegalArgumentException("Invalid Field");
         }
 
         Set<String> validFields = new HashSet<>(Arrays.asList(ArkimeFields.validateFields));
 
         if (!validFields.contains(field)) {
             debugger.error("[Invalid Field] field : {}", field, EsUtil.class);
-            throw new RuntimeException("Invalid Field");
+            throw new IllegalArgumentException("Invalid Field");
         }
     }
 
