@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.util;
+package com.arkime.common.log;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,17 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DebugLogger {
+public class Debugger {
 
     @Value("${debug.mode}")
     private final String debugMode;
 
     @Autowired
-    public DebugLogger(@Value("${debug.mode}") String debugMode) {
+    public Debugger(@Value("${debug.mode}") String debugMode) {
         this.debugMode = debugMode;
     }
 
-    public <T> void errorMessage(String message, Class<T> className) {
+    public <T> void error(String message, Class<T> className) {
         final Logger log = LogManager.getLogger(className);
 
         if ("on".equalsIgnoreCase(debugMode)) {
@@ -29,19 +29,27 @@ public class DebugLogger {
         final Logger log = LogManager.getLogger(className);
 
         if ("on".equalsIgnoreCase(debugMode)) {
-            log.error(message + value);
+            log.error(message, value);
         }
     }
 
-    public <T> void errorException(String message, Exception e, Class<T> className) {
+    public <T> void error(String message, Object value, Object value2, Class<T> className) {
         final Logger log = LogManager.getLogger(className);
 
         if ("on".equalsIgnoreCase(debugMode)) {
-            log.error(message + e);
+            log.error(message, value, value2);
         }
     }
 
-    public <T> void warnMessage(String message, Class<T> className) {
+    public <T> void error(String message, Object value, Object value2, Object value3, Class<T> className) {
+        final Logger log = LogManager.getLogger(className);
+
+        if ("on".equalsIgnoreCase(debugMode)) {
+            log.error(message, value, value2, value3);
+        }
+    }
+
+    public <T> void warn(String message, Class<T> className) {
         final Logger log = LogManager.getLogger(className);
 
         if ("on".equalsIgnoreCase(debugMode)) {
@@ -53,15 +61,23 @@ public class DebugLogger {
         final Logger log = LogManager.getLogger(className);
 
         if ("on".equalsIgnoreCase(debugMode)) {
-            log.warn(message + value);
+            log.warn(message, value);
         }
     }
 
-    public <T> void warnException(String message, Exception e, Class<T> className) {
+    public <T> void warn(String message, Object value, Object value2, Class<T> className) {
         final Logger log = LogManager.getLogger(className);
 
         if ("on".equalsIgnoreCase(debugMode)) {
-            log.warn(message + e);
+            log.warn(message, value, value2);
+        }
+    }
+
+    public <T> void warn(String message, Object value, Object value2, Object value3, Class<T> className) {
+        final Logger log = LogManager.getLogger(className);
+
+        if ("on".equalsIgnoreCase(debugMode)) {
+            log.warn(message, value, value2, value3);
         }
     }
 
@@ -69,15 +85,23 @@ public class DebugLogger {
         final Logger log = LogManager.getLogger(className);
 
         if ("on".equalsIgnoreCase(debugMode)) {
-            log.info(message + value);
+            log.info(message, value);
         }
     }
 
-    public <T> void debug(String message, Object value, Class<T> className) {
+    public <T> void info(String message, Object value, Object value2, Class<T> className) {
         final Logger log = LogManager.getLogger(className);
 
         if ("on".equalsIgnoreCase(debugMode)) {
-            log.debug(message + value);
+            log.info(message, value, value2);
+        }
+    }
+
+    public <T> void info(String message, Object value, Object value2, Object value3, Class<T> className) {
+        final Logger log = LogManager.getLogger(className);
+
+        if ("on".equalsIgnoreCase(debugMode)) {
+            log.info(message, value, value2, value3);
         }
     }
 

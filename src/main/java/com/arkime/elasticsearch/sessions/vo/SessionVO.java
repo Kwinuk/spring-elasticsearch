@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.session.model;
+package com.arkime.elasticsearch.sessions.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

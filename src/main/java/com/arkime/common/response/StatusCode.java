@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.common;
+package com.arkime.common.response;
 
 public enum StatusCode {
     OK("200"), //
