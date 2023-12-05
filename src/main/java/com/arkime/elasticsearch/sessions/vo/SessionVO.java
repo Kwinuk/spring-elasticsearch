@@ -1,25 +1,20 @@
-package com.arkime.elasticsearch.model;
+package com.arkime.elasticsearch.sessions.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Mapping;
 
 import java.util.List;
 
 @Getter
 @Builder
 @AllArgsConstructor
-@Document(indexName = "arkime_sessions*")
-@Mapping(mappingPath = "elastic/session-mapping.json")
-@JsonRootName("session")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonIgnoreProperties(ignoreUnknown=true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Session {
+@Document(indexName = "arkime_sessions*")   // 인덱스
+@JsonIgnoreProperties(ignoreUnknown=true)   // 포함되지 않은 속성 무시
+@JsonInclude(JsonInclude.Include.NON_NULL)  // null 인 속성 무시
+public class SessionVO {
 
     @Id
     private String _index;
@@ -58,7 +53,9 @@ public class Session {
     private Integer tagsCnt;
     private List<String> tags;
 
-    @Data
+    @Getter
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class TcpFlags {
         private Integer syn;
         private Integer synAck;
@@ -71,7 +68,9 @@ public class Session {
         private Integer dstZero;
     }
 
-    @Data
+    @Getter
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Source {
         private String ip;
         private Integer port;
@@ -81,7 +80,9 @@ public class Session {
         private List<String> mac;
     }
 
-    @Data
+    @Getter
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Destination {
         private String ip;
         private Integer port;
@@ -91,24 +92,32 @@ public class Session {
         private List<String> mac;
     }
 
-    @Data
+    @Getter
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Network {
         private Integer packets;
         private Integer bytes;
         private String communityId;
     }
 
-    @Data
+    @Getter
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Client {
         private Integer bytes;
     }
 
-    @Data
+    @Getter
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Server {
         private Integer bytes;
     }
 
-    @Data
+    @Getter
+    @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Http {
         private Integer bodyMagicCnt;
         private List<String> bodyMagic;
