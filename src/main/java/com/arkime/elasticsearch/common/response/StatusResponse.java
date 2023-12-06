@@ -1,4 +1,4 @@
-package com.arkime.common.response;
+package com.arkime.elasticsearch.common.response;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.arkime.common;
+package com.arkime.elasticsearch.common.field;
 
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public class ArkimeFields {
+public class ArkimeField {
 
     // 문서 ID
     public static final String FIELD_ID = "_id";
@@ -104,7 +104,7 @@ public class ArkimeFields {
     private static String[] generateAllFields() {
         List<String> allFieldsList = new ArrayList<>();
 
-        Field[] fields = ArkimeFields.class.getDeclaredFields();
+        Field[] fields = ArkimeField.class.getDeclaredFields();
         for (Field field : fields) {
             if (field.getType() == String.class) {
                 try {
@@ -120,7 +120,7 @@ public class ArkimeFields {
     }
 
     public static String[] getAllFields() {
-        return Arrays.stream(ArkimeFields.class.getDeclaredFields())
+        return Arrays.stream(ArkimeField.class.getDeclaredFields())
                 .filter(field -> java.lang.reflect.Modifier.isPublic(field.getModifiers())
                         && java.lang.reflect.Modifier.isStatic(field.getModifiers())
                         && java.lang.reflect.Modifier.isFinal(field.getModifiers())

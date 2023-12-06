@@ -1,7 +1,7 @@
 package com.arkime.elasticsearch.util;
 
-import com.arkime.common.ArkimeFields;
-import com.arkime.common.log.Debugger;
+import com.arkime.elasticsearch.common.field.ArkimeField;
+import com.arkime.elasticsearch.common.log.Debugger;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -39,12 +39,12 @@ public class EsUtil {
         String field;
 
         if (bounding != null) {
-            if (bounding.equals("firstPacket")) field = ArkimeFields.FIELD_START_TIME;
-            else if (bounding.equals("lastPacket")) field = ArkimeFields.FIELD_STOP_TIME;
-            else field = ArkimeFields.FIELD_START_TIME;
+            if (bounding.equals("firstPacket")) field = ArkimeField.FIELD_START_TIME;
+            else if (bounding.equals("lastPacket")) field = ArkimeField.FIELD_STOP_TIME;
+            else field = ArkimeField.FIELD_START_TIME;
         } else {
             debugger.warn("Bounding value cannot be null.", EsUtil.class);
-            field = ArkimeFields.FIELD_START_TIME;
+            field = ArkimeField.FIELD_START_TIME;
         }
 
         if (startTime == 0 || stopTime == 0) {
@@ -79,13 +79,13 @@ public class EsUtil {
             }
         } catch (IllegalArgumentException e) {
             debugger.error("IllegalArgumentException occurred during field validation in setTermQuery", e, EsUtil.class);
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("IllegalArgumentException occurred during field validation in setTermQuery", e);
         } catch (RuntimeException e) {
-            debugger.error("Validation failed : {}", e.getMessage(), EsUtil.class);
-
+            debugger.error("Validation failed ", e.getMessage(), EsUtil.class);
+            throw new RuntimeException("Validation failed ", e);
         } catch (Exception e) {
             debugger.error("Exception occurred during field validation in setTermQuery", e, EsUtil.class);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Validation failed ", e);
         }
     }
 
@@ -96,7 +96,7 @@ public class EsUtil {
             debugger.info("[SEARCH_QUERY] : {}", searchQueryBuilder.build().getQuery(), EsUtil.class);
         } catch (Exception e) {
             debugger.error("Error setting bool query", e, EsUtil.class);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error setting bool query", e);
         }
     }
 
@@ -110,7 +110,7 @@ public class EsUtil {
             searchQueryBuilder.withPageable(PageRequest.of(offset, limit));
         } catch (Exception e) {
             debugger.error("Invalid offset or limit values ", e, EsUtil.class);
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("Invalid offset or limit values ", e);
         }
     }
 
@@ -123,14 +123,14 @@ public class EsUtil {
             searchQueryBuilder.withSourceFilter(new FetchSourceFilter(includeFields, excludeFields));
         } else if (includeFields != null && includeFields.length > 0) {
             if (Arrays.asList(includeFields).contains("all")) {
-                searchQueryBuilder.withSourceFilter(new FetchSourceFilter(ArkimeFields.getAllFields(), null));
+                searchQueryBuilder.withSourceFilter(new FetchSourceFilter(ArkimeField.getAllFields(), null));
             } else {
                 searchQueryBuilder.withSourceFilter(new FetchSourceFilter(includeFields, null));
             }
         } else if (excludeFields != null && excludeFields.length > 0) {
-            searchQueryBuilder.withSourceFilter(new FetchSourceFilter(ArkimeFields.defaultFields, excludeFields));
+            searchQueryBuilder.withSourceFilter(new FetchSourceFilter(ArkimeField.defaultFields, excludeFields));
         } else if (includeFields == null && excludeFields == null) {
-            searchQueryBuilder.withSourceFilter(new FetchSourceFilter(ArkimeFields.defaultFields, null));
+            searchQueryBuilder.withSourceFilter(new FetchSourceFilter(ArkimeField.defaultFields, null));
         }
     }
 
@@ -201,9 +201,11 @@ public class EsUtil {
                 try {
                     T result = hit != null ? hit.getContent() : null;
 
-                    if (result != null)  results.add(result);
-                    else debugger.warn("Null content in SearchHit", EsUtil.class);
-
+                    if (result != null) results.add(result);
+                    else {
+                        debugger.warn("Null content in SearchHit", EsUtil.class);
+                        return null;
+                    }
                 } catch (Exception e) {
                     debugger.error("Error getting content from SearchHit", EsUtil.class);
                     throw new RuntimeException("Error getting content from SearchHit", e);
@@ -242,7 +244,7 @@ public class EsUtil {
             throw new IllegalArgumentException("Invalid Field");
         }
 
-        Set<String> validFields = new HashSet<>(Arrays.asList(ArkimeFields.validateFields));
+        Set<String> validFields = new HashSet<>(Arrays.asList(ArkimeField.validateFields));
 
         for (String field : Objects.requireNonNull(fields)) {
             if (!validFields.contains(field)) {
@@ -258,7 +260,7 @@ public class EsUtil {
             throw new IllegalArgumentException("Invalid Field");
         }
 
-        Set<String> validFields = new HashSet<>(Arrays.asList(ArkimeFields.validateFields));
+        Set<String> validFields = new HashSet<>(Arrays.asList(ArkimeField.validateFields));
 
         if (!validFields.contains(field)) {
             debugger.error("[Invalid Field] field : {}", field, EsUtil.class);

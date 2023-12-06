@@ -1,4 +1,4 @@
-package com.arkime.common.log;
+package com.arkime.elasticsearch.common.log;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

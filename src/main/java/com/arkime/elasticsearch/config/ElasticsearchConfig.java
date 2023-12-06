@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.util;
+package com.arkime.elasticsearch.config;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.convert.ElasticsearchConverter;
 
 @Configuration
-public class EsConfig extends ElasticsearchConfigurationSupport {
+public class ElasticsearchConfig extends ElasticsearchConfigurationSupport {
 
     @Value("${elasticsearch.host}")
     private String host;
