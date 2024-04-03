@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.config;
+package com.xcurenet.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.List;
 
+import java.util.Arrays;
+
 @Configuration
 public class SwaggerConfig {
 
@@ -21,11 +23,11 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.arkime.elasticsearch.sessions.controller"))
+                .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
-                .securityContexts(List.of(securityContext()))
-                .securitySchemes(List.of(bearerAuthSecurityScheme()))
+                .securityContexts(Arrays.asList(securityContext())) // Modify this line
+                .securitySchemes(Arrays.asList(bearerAuthSecurityScheme())) // Modify this line
                 .apiInfo(apiInfo());
     }
 
@@ -49,7 +51,6 @@ public class SwaggerConfig {
     List<SecurityReference> defaultAuth() {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = new AuthorizationScope("global", "accessEverything");
-        return List.of(new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes));
+        return Arrays.asList(new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes)); // Modify this line
     }
-
 }

@@ -8,7 +8,7 @@ group = 'com'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '11'
+    sourceCompatibility = '8'
 }
 
 configurations {
@@ -26,11 +26,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
-//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     // log4j
     implementation 'org.apache.logging.log4j:log4j-api:2.21.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.21.1'
     implementation 'javax.xml.soap:javax.xml.soap-api:1.4.0'
+    // Quartz
+    implementation 'org.quartz-scheduler:quartz:2.3.2'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.5'
     // 롬복
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -39,11 +42,7 @@ dependencies {
     // swagger
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
-    // JWT
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-
+    implementation group: 'com.jcraft', name: 'jsch', version: '0.1.53'
     implementation 'org.json:json:20211205'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

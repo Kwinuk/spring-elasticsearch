@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.config;
+package com.xcurenet.config;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;

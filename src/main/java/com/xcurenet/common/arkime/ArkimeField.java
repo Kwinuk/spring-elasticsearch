@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.common.field;
+package com.xcurenet.common.arkime;
 
 import lombok.Getter;
 
@@ -11,6 +11,7 @@ import java.util.List;
 public class ArkimeField {
 
     // 문서 ID
+    public static final String FIELD_INDEX = "_index";
     public static final String FIELD_ID = "_id";
     public static final String FIELD_DOC = "_doc";
 
@@ -83,7 +84,20 @@ public class ArkimeField {
     public static final String FIELD_HTTP_REQUEST_BODY = "http.requestBody";
     public static final String FIELD_HTTP_REQUEST_HEADER = "http.requestHeader";
 
-    public static String[] defaultFields = new String[]{
+    // FILES
+    public static final String FIELD_FILES_NUM = "num";
+    public static final String FIELD_FILES_NAME = "name";
+    public static final String FIELD_FILES_FIRST = "first";
+    public static final String FIELD_FILES_NODE = "node";
+    public static final String FIELD_FILES_LOCKED = "locked";
+    public static final String FIELD_FILES_ENCODING = "packetPosEncoding";
+    public static final String FIELD_FILES_BITS = "uncompressedBits";
+    public static final String FIELD_FILES_PACKET_SIZE = "packetSize";
+    public static final String FIELD_FILES_FILE_SIZE = "filesize";
+    public static final String FIELD_FILES_PACKETS = "packets";
+
+    public static String[] sessionsDefaultFields = new String[]{
+            FIELD_INDEX,
             FIELD_ID,
             FIELD_FILE_NAME,
             FIELD_IP_PROTOCOL,
@@ -97,6 +111,19 @@ public class ArkimeField {
             FIELD_TOTAL_BYTES,
             FIELD_NET_BYTES,
             FIELD_NODE
+    };
+
+    public static String[] filesDefaultFields = new String[]{
+            FIELD_FILES_NUM,
+            FIELD_FILES_NAME,
+            FIELD_FILES_FIRST,
+            FIELD_FILES_NODE,
+            FIELD_FILES_LOCKED,
+            FIELD_FILES_ENCODING,
+            FIELD_FILES_BITS,
+            FIELD_FILES_PACKET_SIZE,
+            FIELD_FILES_FILE_SIZE,
+            FIELD_FILES_PACKETS
     };
 
     public static String[] validateFields = generateAllFields();

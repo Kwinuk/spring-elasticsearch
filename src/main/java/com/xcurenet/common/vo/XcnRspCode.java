@@ -1,6 +1,6 @@
-package com.arkime.elasticsearch.common.response;
+package com.xcurenet.common.vo;
 
-public enum StatusCode {
+public enum XcnRspCode {
     OK("200"), //
     OK_CUSTOM("201"), //
     BAD_REQUEST("400"),
@@ -19,7 +19,7 @@ public enum StatusCode {
 
     private final String code;
 
-    StatusCode(final String code) {
+    XcnRspCode(final String code) {
         this.code = code;
     }
 
@@ -27,7 +27,7 @@ public enum StatusCode {
         return this.code;
     }
 
-    public static String getMessage(final StatusCode code) {
+    public static String getMessage(final XcnRspCode code) {
         switch (code) {
             case OK:								return "";
             case BAD_REQUEST:						return "Bad Request";

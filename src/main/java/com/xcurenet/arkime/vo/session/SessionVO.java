@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.sessions.vo;
+package com.xcurenet.arkime.vo.session;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,6 +17,7 @@ import java.util.List;
 public class SessionVO {
 
     @Id
+    private String _id;
     private String _index;
     private Long firstPacket;
     private Long lastPacket;

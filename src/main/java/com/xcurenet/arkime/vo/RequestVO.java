@@ -1,4 +1,4 @@
-package com.arkime.elasticsearch.common.request;
+package com.xcurenet.arkime.vo;
 
 import lombok.*;
 
@@ -7,8 +7,8 @@ import java.util.Map;
 
 @Data
 @AllArgsConstructor
-public class SearchBody {
-
+@NoArgsConstructor
+public class RequestVO {
     // 검색식 필드
     private Map<String, Object> expression;
     // 조회 필드 목록
